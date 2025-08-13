@@ -17,7 +17,7 @@ stages:
     steps:
 
       # Step 1: Set Node.js version
-      - task: UseNode@1
+      - task: NodeTool@0
         inputs:
           versionSource: 'spec'
         versionSpec: '16.x'
