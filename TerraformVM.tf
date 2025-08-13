@@ -12,8 +12,8 @@ resource "azurerm_linux_virtual_machine" "vm" { ... }
 resource "azurerm_resource_group" "bk-rg-Proj-Dev-002" {
   for_each = var.rg
   name     = each.value.resource_group_name
-  location = each.value.location
-}
+  location = each.value.location  }
+  variable "rg" { }
 
 #Vnet
 resource "azurerm_virtual_network" "bk-rg-Proj-Dev-002" {
@@ -21,8 +21,7 @@ resource "azurerm_virtual_network" "bk-rg-Proj-Dev-002" {
   name                = each.value.virtual_network_name
   location            = each.value.location
   resource_group_name = each.value.resource_group_name
-  address_space       = each.value.address_space
-}
+  address_space       = each.value.address_space }
 
 #subnet
 resource "azurerm_subnet" "endpoint" {
@@ -30,8 +29,7 @@ resource "azurerm_subnet" "endpoint" {
   name                 = each.value.subnet_name
   resource_group_name  = each.value.resource_group_name
   virtual_network_name = each.value.virtual_network_name
-  address_prefixes     = each.value.address_prefixes
-}
+  address_prefixes     = each.value.address_prefixes }
 #NIC
 resource "azurerm_network_interface" "nic" {
   for_each            = var.NIC
@@ -43,10 +41,7 @@ resource "azurerm_network_interface" "nic" {
     name                          = each.value.ip_configuration_name
     subnet_id                     = data.azurerm_subnet.subnetdata[each.key].id
     private_ip_address_allocation = each.value.private_ip_address_allocation
-    public_ip_address_id          = data.azurerm_public_ip.publicIpdata[each.key].id
-
-  }
-}
+    public_ip_address_id          = data.azurerm_public_ip.publicIpdata[each.key].id  }  }
 
 #Data_NIC
 data "azurerm_subnet" "subnetdata" {
