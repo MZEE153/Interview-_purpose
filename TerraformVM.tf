@@ -15,6 +15,12 @@ resource "azurerm_resource_group" "bk-rg-Proj-Dev-002" {
   location = each.value.location  }
   variable "rg" { }
 
+main_rg = {
+  RG1 = {
+    resource_group_name = "rg-Proj-Dev-001"
+    location            = "Japan east" } }
+
+
 #Vnet
 resource "azurerm_virtual_network" "bk-rg-Proj-Dev-002" {
  for_each = var.vnetvar
@@ -23,6 +29,13 @@ resource "azurerm_virtual_network" "bk-rg-Proj-Dev-002" {
   resource_group_name = each.value.resource_group_name
   address_space       = each.value.address_space }
 
+main_Vnet = {
+  vnet1 = {
+    virtual_network_name = "vnet-Proj-Dev-west_india-001"
+    location             = "Japan east"
+    resource_group_name  = "rg-Proj-Dev-001"
+    address_space        = ["10.0.0.0/16", "9.0.0.0/16"]  }
+
 #subnet
 resource "azurerm_subnet" "endpoint" {
     for_each = var.csubnet
@@ -30,6 +43,14 @@ resource "azurerm_subnet" "endpoint" {
   resource_group_name  = each.value.resource_group_name
   virtual_network_name = each.value.virtual_network_name
   address_prefixes     = each.value.address_prefixes }
+
+main_subnet = {
+  subnet1 = {
+    resource_group_name  = "rg-Proj-Dev-001"
+    subnet_name          = "subnet1"
+    virtual_network_name = "vnet-Proj-Dev-west_india-001"
+    address_prefixes     = ["10.0.2.0/24"]   }}
+
 #NIC
 resource "azurerm_network_interface" "nic" {
   for_each            = var.NIC
